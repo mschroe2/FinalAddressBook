@@ -1,0 +1,2 @@
+serviceClass: edu.gac.MCS270.AddressBook.client.GreetingService
+path: 1B166DC6D9B68CD3533F5FE31DE5D8B9.gwt.rpc
