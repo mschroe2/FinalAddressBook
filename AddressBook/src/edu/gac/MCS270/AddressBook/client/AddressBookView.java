@@ -163,8 +163,7 @@ public class AddressBookView {
 				// checks if there are things entered into the fields
 				if (firstName.length() > 0 && lastName.length() > 0 && address.length() > 0 && city.length() > 0 &&
 						state.length() > 0 && zip > 0 && phone > 0) {
-					// 
-//					controller.SubmitEntryToServer(new EntryData(firstName, lastName, address, city, state, zip, phone));
+					controller.handleEntrySubmit(entry));
 				}
 				else {
 					Window.alert("PLZ INPUT REAL information");
@@ -335,5 +334,7 @@ public class AddressBookView {
 		
 	}
 		
-	
+	public void sendSuccessfulMessage() {
+		Window.alert("Entry was stored!");
+	}
 }
