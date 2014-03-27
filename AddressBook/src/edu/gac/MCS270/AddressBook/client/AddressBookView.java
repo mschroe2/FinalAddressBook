@@ -13,6 +13,7 @@ import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 import edu.gac.MCS270.AddressBook.shared.EntryData;
@@ -96,6 +97,7 @@ public class AddressBookView {
 		lastNameTextBoxPanel.add(lastNameTextBox);
 		workingSpace.add(lastNameTextBoxPanel);		
 		
+		//address textbox
 		HorizontalPanel addressLabelPanel = new HorizontalPanel();
 		Label addressLabel = new Label("Address");
 		addressLabelPanel.add(addressLabel);
@@ -106,6 +108,7 @@ public class AddressBookView {
 		addressTextBoxPanel.add(addressTextBox);
 		workingSpace.add(addressTextBoxPanel);
 		
+		//city textbox
 		HorizontalPanel cityLabelPanel = new HorizontalPanel();
 		Label cityLabel = new Label("City");
 		cityLabelPanel.add(cityLabel);
@@ -116,6 +119,7 @@ public class AddressBookView {
 		cityTextBoxPanel.add(cityTextBox);
 		workingSpace.add(cityTextBoxPanel);
 		
+		//state textbox
 		HorizontalPanel stateLabelPanel = new HorizontalPanel();
 		Label stateLabel = new Label("State");
 		stateLabelPanel.add(stateLabel);
@@ -126,6 +130,7 @@ public class AddressBookView {
 		stateTextBoxPanel.add(stateTextBox);
 		workingSpace.add(stateTextBoxPanel);
 		
+		//zip textbox
 		HorizontalPanel zipLabelPanel = new HorizontalPanel();
 		Label zipLabel = new Label("Zip");
 		zipLabelPanel.add(zipLabel);
@@ -136,6 +141,18 @@ public class AddressBookView {
 		zipTextBoxPanel.add(zipTextBox);
 		workingSpace.add(zipTextBoxPanel);
 		
+		//email textbox
+		HorizontalPanel emailLabelPanel = new HorizontalPanel();
+		Label emailLabel = new Label("Email");
+		emailLabelPanel.add(emailLabel);
+		workingSpace.add(emailLabelPanel);
+		
+		HorizontalPanel emailTextBoxPanel = new HorizontalPanel();
+		final TextBox emailTextBox = new TextBox();
+		emailTextBoxPanel.add(emailTextBox);
+		workingSpace.add(emailTextBoxPanel);
+		
+		//phone textbox
 		HorizontalPanel phoneLabelPanel = new HorizontalPanel();
 		Label phoneLabel = new Label("Phone");
 		phoneLabelPanel.add(phoneLabel);
@@ -158,13 +175,14 @@ public class AddressBookView {
 				String address = addressTextBox.getText();
 				String city = cityTextBox.getText();
 				String state = stateTextBox.getText();
+				String email = emailTextBox.getText();
 				int zip = Integer.parseInt(zipTextBox.getText());
 				int phone = Integer.parseInt(phoneTextBox.getText());
 				// checks if there are things entered into the fields
 				if (firstName.length() > 0 && lastName.length() > 0 && address.length() > 0 && city.length() > 0 &&
 						state.length() > 0 && zip > 0 && phone > 0) {
 					// 
-//					controller.SubmitEntryToServer(new EntryData(firstName, lastName, address, city, state, zip, phone));
+					controller.SubmitEntryToServer(new EntryData(firstName, lastName, address, city, state, zip, email, phone));
 				}
 				else {
 					Window.alert("PLZ INPUT REAL information");
@@ -175,7 +193,7 @@ public class AddressBookView {
 		
 	}
 	
-	public void viewSingleAddressBookEntry(EntryData entry) {
+	public void viewSingleAddressBookEntry(final EntryData entry) {
 		
 		FlowPanel workingSpace = mainPage();
 		
@@ -184,13 +202,55 @@ public class AddressBookView {
 		firstNameLabelPanel.add(firstNameLabel);
 		workingSpace.add(firstNameLabelPanel);
 		
-		// FINISH OTHER PANELS
-		
-		
 		HorizontalPanel lastNameLabelPanel = new HorizontalPanel();
-		Label LastNameLabel = new Label("Last Name" + entry.getLastName());
+		Label lastNameLabel = new Label("Last Name " + entry.getLastName());
+		lastNameLabelPanel.add(lastNameLabel);
+		workingSpace.add(lastNameLabelPanel);
+		
+		HorizontalPanel addressLabelPanel = new HorizontalPanel();
+		Label addressLabel = new Label("Address " + entry.getAddress());
+		addressLabelPanel.add(addressLabel);
+		workingSpace.add(addressLabelPanel);
+		
+		HorizontalPanel cityLabelPanel = new HorizontalPanel();
+		Label cityLabel = new Label("City " + entry.getCity());
+		cityLabelPanel.add(cityLabel);
+		workingSpace.add(cityLabelPanel);
+		
+		HorizontalPanel stateLabelPanel = new HorizontalPanel();
+		Label stateLabel = new Label("State " + entry.getState());
+		stateLabelPanel.add(stateLabel);
+		workingSpace.add(stateLabelPanel);
+		
+		HorizontalPanel zipLabelPanel = new HorizontalPanel();
+		Label zipLabel = new Label("Zip " + entry.getZip());
+		zipLabelPanel.add(zipLabel);
+		workingSpace.add(zipLabelPanel);
+		
+		HorizontalPanel emailLabelPanel = new HorizontalPanel();
+		Label emailLabel = new Label("Email " + entry.getEmail());
+		emailLabelPanel.add(emailLabel);
+		workingSpace.add(emailLabelPanel);
+		
+		HorizontalPanel phoneLabelPanel = new HorizontalPanel();
+		Label phoneLabel = new Label("Phone " + entry.getPhone());
+		phoneLabelPanel.add(phoneLabel);
+		workingSpace.add(phoneLabelPanel);
 		
 	    // Buttons Like Delete or (Edit)
+		
+		//Delete Button
+		Button deleteContactButton = new Button("Delete");
+		deleteContactButton.addStyleName("deleteContactButton");
+		deleteContactButton.setText("Delete");
+		
+		//Add Clickhandler for Delete
+		deleteContactButton.addClickHandler(new ClickHandler(){
+			@Override
+			public void onClick(ClickEvent event){
+				controller.deleteContactInfo(entry);
+			}
+		});
 	}
 	
 	public void viewEditAddressBookEntryForm() {
@@ -333,6 +393,10 @@ public class AddressBookView {
 		mailingInfoPopup.setWidget(mailingInfoPanel);
 		mailingInfoPopup.center();
 		
+	}
+
+	public void sendSuccessfulDeleteMessage() {
+		Window.alert("Contact was Deleted.");
 	}
 		
 	
