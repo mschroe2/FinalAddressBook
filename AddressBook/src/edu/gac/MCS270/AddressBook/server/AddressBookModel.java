@@ -8,7 +8,7 @@ import edu.gac.MCS270.AddressBook.shared.EntryData;
 public class AddressBookModel {
 	static final PersistenceManagerFactory pmf = PMF.get();
 
-	// stores entries in the database
+	// stores entries in the database 
 	public static void storeEntry(EntryData entry) {
 		PersistenceManager pm = pmf.getPersistenceManager();
 		try {
