@@ -73,6 +73,10 @@ public class AddressBookView {
 	
 	public void viewCreateAdressBookEntryForm() {
 		FlowPanel workingSpace = mainPage();
+		final FlowPanel addAddressPanel = new FlowPanel();
+		VerticalPanel addressPanel = new VerticalPanel();
+		addressPanel.addStyleName("AddContactPanel");
+		addAddressPanel.add(addressPanel);
 		
 		// creates new horizontal panel for the text above the blank text box 
 		HorizontalPanel firstNameLabelPanel = new HorizontalPanel();
@@ -84,8 +88,7 @@ public class AddressBookView {
 		final TextBox firstNameTextBox = new TextBox();
 		firstNameTextBoxPanel.add(firstNameTextBox);
 		workingSpace.add(firstNameTextBoxPanel);
-		
-		// FINISH OTHER PANELS
+
 		// Last name textbox
 		HorizontalPanel lastNameLabelPanel = new HorizontalPanel();
 		Label lastNameLabel = new Label("Last Name");
@@ -163,11 +166,25 @@ public class AddressBookView {
 		phoneTextBoxPanel.add(phoneTextBox);
 		workingSpace.add(phoneTextBoxPanel);
 		
+		//Servlet Call? Lines from Guslist-gae
+		//submitFormPanel.setEncoding(FormPanel.ENCODING_MULTIPART);
+		//submitFormPanel.setMethod(FormPanel.METHOD_POST);
+		
+		firstNameTextBox.setName("FirstName");
+		lastNameTextBox.setName("LastName");
+		addressTextBox.setName("Address");
+		cityTextBox.setName("City");
+		stateTextBox.setName("State");
+		zipTextBox.setName("Zip");
+		emailTextBox.setName("Email");
+		phoneTextBox.setName("Phone");
+		
 		
 		// adding clicker handler for submitting and storing the information
 		Button submitButton = new Button("Submit");
 		submitButton.setText("Submit");
 		submitButton.addClickHandler(new ClickHandler() {
+			//Add contact click handler
 			@Override
 			public void onClick(ClickEvent event) {
 				String firstName = firstNameTextBox.getText();
@@ -180,18 +197,27 @@ public class AddressBookView {
 				int phone = Integer.parseInt(phoneTextBox.getText());
 				// checks if there are things entered into the fields
 				if (firstName.length() > 0 && lastName.length() > 0 && address.length() > 0 && city.length() > 0 &&
-						state.length() > 0 && zip > 0 && phone > 0) {
-					// 
+						state.length() > 0 && zip == 5 && phone == 10 || phone == 11) {
 					controller.SubmitEntryToServer(new EntryData(firstName, lastName, address, city, state, zip, email, phone));
 				}
 				else {
-					Window.alert("PLZ INPUT REAL information");
+					//send error message will all possible problems.
+					Window.alert("Make sure all fields are filled. The zip code is 5 digits. The phone number entered is 10 or 11 digits.");
 				}
 			}
 			
 		});
-		
+		//Sent after Flow and causes a doPost message to server
+		workingSpace.addaddressAddedHandler(new FlowPanel.addressAddedHandler(){
+			public void onSubmitComplete(SubmitCompleteEvent event){
+				if (post == null){
+					workingSpace.reset();
+					firstNameTextBox.setFocus(true);
+				}
+			}
+		});
 	}
+	
 	
 	public void viewSingleAddressBookEntry(final EntryData entry) {
 		
@@ -396,7 +422,12 @@ public class AddressBookView {
 	}
 
 	public void sendSuccessfulDeleteMessage() {
-		Window.alert("Contact was Deleted.");
+		Window.alert("Contact was Deleted");
+	}
+
+	public void sendSuccessfulAddMessage() {
+		Window.alert("Contact was added to Address Book");
+		
 	}
 		
 	

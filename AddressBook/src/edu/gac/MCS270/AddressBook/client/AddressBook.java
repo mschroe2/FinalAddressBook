@@ -21,10 +21,24 @@ public class AddressBook implements EntryPoint {
 		// TODO Auto-generated method stub
 		
 	}
+	//adds contact to address book
+	public void addAddressHandler(EntryData entries){
+		//Service Line of code goes here
+		new AsyncCallback<String>(){
+			public void onFailure(Throwable caught){
+				return;
+			}
+
+			@Override
+			public void onSuccess(String result) {
+				abView.sendSuccessfulAddMessage();
+			}
+		};
+	}
 	
 	//client view to delete a contact
 	public void deleteContactInfo(EntryData entry) {
-		addressModelService.deleteContactFromAddressBook(entry,
+		//Service Line of code goes here
 				new AsyncCallback<List<EntryData>>(){
 			public void onFailure(Throwable caught){
 				return;
@@ -33,7 +47,7 @@ public class AddressBook implements EntryPoint {
 					abView.sendSuccessfulDeleteMessage();
 					abView.viewAddressBookEntries(entries);
 			}
-		});
+		};
 		
 	}
 }
